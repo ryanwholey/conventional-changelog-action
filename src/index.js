@@ -68,7 +68,7 @@ async function run() {
 
     const config = conventionalConfigFile && requireScript(conventionalConfigFile)
 
-    conventionalRecommendedBump({ preset, tagPrefix, config }, async(error, recommendation) => {
+    await conventionalRecommendedBump({ preset, tagPrefix, config }, async(error, recommendation) => {
       if (error) {
         core.setFailed(error.message)
         return
@@ -169,6 +169,8 @@ async function run() {
         await git.commit(gitCommitMessage.replace('{version}', gitTag))
       }
 
+      core.info('Attempting tag')
+      
       // Create the new tag
       await git.createTag(gitTag)
 
