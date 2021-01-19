@@ -46,7 +46,7 @@ module.exports = new (class Git {
    * @param command
    * @return {Promise<>}
    */
-  exec = (command) => new Promise(async(resolve, reject) => {
+  exec = async(command) => {
     let execOutput = ''
 
     const options = {
@@ -56,16 +56,12 @@ module.exports = new (class Git {
         },
       },
     }
-
     const exitCode = await exec.exec(`git ${command}`, null, options)
-
     if (exitCode === 0) {
-      resolve(execOutput)
-
-    } else {
-      reject(`Command "git ${command}" exited with code ${exitCode}.`)
+      return execOutput
     }
-  })
+    throw new Error(`Command "git ${command}" exited with code ${exitCode}.`)
+  }
 
   /**
    * Set a git config prop
